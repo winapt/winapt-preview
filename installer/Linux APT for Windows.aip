@@ -21,6 +21,8 @@
     <ROW Property="ARPURLUPDATEINFO" Value="http://github.com/winapt"/>
     <ROW Property="AiEmbeddedUI" Value="1" MultiBuildValue="DefaultBuild:"/>
     <ROW Property="AiWinUI" Value="1"/>
+    <ROW Property="AppLogoIcon" Value="applogo.png" MultiBuildValue="DefaultBuild:winapt.png" Type="1" MsiKey="AppLogoIcon"/>
+    <ROW Property="AppLogoIconDark" Value="applogodark.png" MultiBuildValue="DefaultBuild:winapt.png" Type="1" MsiKey="AppLogoIconDark"/>
     <ROW Property="CTRLS" Value="1"/>
     <ROW Property="Manufacturer" Value="WinAPT Organization"/>
     <ROW Property="ProductCode" Value="1033:{A1B139B7-0900-419A-9AFE-CAAE82E491B2} " Type="16"/>
@@ -28,6 +30,8 @@
     <ROW Property="ProductName" Value="Linux APT for Windows"/>
     <ROW Property="ProductVersion" Value="1.0.0" Options="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
+    <ROW Property="TaskBarIcon" Value="winapt.ico" Type="1" MsiKey="TaskBarIcon"/>
+    <ROW Property="TaskBarIconDark" Value="winapt.ico" Type="1" MsiKey="TaskBarIconDark"/>
     <ROW Property="UpgradeCode" Value="{0398DA41-868A-4A69-9951-BF4CFEBC412D}"/>
     <ROW Property="VIEWREADME" Value="1" Type="4"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -70,19 +74,19 @@
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="System.IO.Compression.FileSystem.dll" Component_="System.IO.Compression.FileSystem.dll" FileName="SYSTEM~1.DLL|System.IO.Compression.FileSystem.dll" Attributes="0" SourcePath="files\System.IO.Compression.FileSystem.dll" SelfReg="false"/>
-    <ROW File="System.IO.Compression.ZipFile.dll" Component_="System.IO.Compression.ZipFile.dll" FileName="SYSTEM~2.DLL|System.IO.Compression.ZipFile.dll" Attributes="0" SourcePath="files\System.IO.Compression.ZipFile.dll" SelfReg="false"/>
-    <ROW File="System.Windows.Forms.dll" Component_="System.Windows.Forms.dll" FileName="SYSTEM~3.DLL|System.Windows.Forms.dll" Attributes="0" SourcePath="files\System.Windows.Forms.dll" SelfReg="false"/>
-    <ROW File="System.Xml.dll" Component_="System.Xml.dll" FileName="SYSTEM~4.DLL|System.Xml.dll" Attributes="0" SourcePath="files\System.Xml.dll" SelfReg="false"/>
-    <ROW File="System.Xml.Linq.dll" Component_="System.Xml.Linq.dll" FileName="SYSTEM~5.DLL|System.Xml.Linq.dll" Attributes="0" SourcePath="files\System.Xml.Linq.dll" SelfReg="false"/>
+    <ROW File="System.IO.Compression.FileSystem.dll" Component_="System.IO.Compression.FileSystem.dll" FileName="SYSTEM~1.DLL|System.IO.Compression.FileSystem.dll" Attributes="0" SourcePath="files\System.IO.Compression.FileSystem.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.IO.Compression.ZipFile.dll" Component_="System.IO.Compression.ZipFile.dll" FileName="SYSTEM~2.DLL|System.IO.Compression.ZipFile.dll" Attributes="0" SourcePath="files\System.IO.Compression.ZipFile.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.Windows.Forms.dll" Component_="System.Windows.Forms.dll" FileName="SYSTEM~3.DLL|System.Windows.Forms.dll" Attributes="0" SourcePath="files\System.Windows.Forms.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.Xml.dll" Component_="System.Xml.dll" FileName="SYSTEM~4.DLL|System.Xml.dll" Attributes="0" SourcePath="files\System.Xml.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.Xml.Linq.dll" Component_="System.Xml.Linq.dll" FileName="SYSTEM~5.DLL|System.Xml.Linq.dll" Attributes="0" SourcePath="files\System.Xml.Linq.dll" SelfReg="false" DigSign="true"/>
     <ROW File="winapt.exe" Component_="winapt.exe" FileName="winapt.exe" Attributes="0" SourcePath="files\winapt.exe" SelfReg="false" DigSign="true"/>
     <ROW File="winapt.exe.config" Component_="winapt.exe.config" FileName="WINAPT~1.CON|winapt.exe.config" Attributes="0" SourcePath="files\winapt.exe.config" SelfReg="false"/>
-    <ROW File="Microsoft.CSharp.dll" Component_="Microsoft.CSharp.dll" FileName="MICROS~1.DLL|Microsoft.CSharp.dll" Attributes="0" SourcePath="files\Microsoft.CSharp.dll" SelfReg="false"/>
-    <ROW File="System.Data.DataSetExtensions.dll" Component_="System.Data.DataSetExtensions.dll" FileName="SYSTEM~6.DLL|System.Data.DataSetExtensions.dll" Attributes="0" SourcePath="files\System.Data.DataSetExtensions.dll" SelfReg="false"/>
-    <ROW File="System.Data.dll" Component_="System.Data.dll" FileName="SYSTEM~7.DLL|System.Data.dll" Attributes="0" SourcePath="files\System.Data.dll" SelfReg="false"/>
-    <ROW File="System.Deployment.dll" Component_="System.Deployment.dll" FileName="SYSTEM~8.DLL|System.Deployment.dll" Attributes="0" SourcePath="files\System.Deployment.dll" SelfReg="false"/>
-    <ROW File="System.dll" Component_="System.dll" FileName="System.dll" Attributes="0" SourcePath="files\System.dll" SelfReg="false"/>
-    <ROW File="System.Drawing.dll" Component_="System.Drawing.dll" FileName="SYSTEM~9.DLL|System.Drawing.dll" Attributes="0" SourcePath="files\System.Drawing.dll" SelfReg="false"/>
+    <ROW File="Microsoft.CSharp.dll" Component_="Microsoft.CSharp.dll" FileName="MICROS~1.DLL|Microsoft.CSharp.dll" Attributes="0" SourcePath="files\Microsoft.CSharp.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.Data.DataSetExtensions.dll" Component_="System.Data.DataSetExtensions.dll" FileName="SYSTEM~6.DLL|System.Data.DataSetExtensions.dll" Attributes="0" SourcePath="files\System.Data.DataSetExtensions.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.Data.dll" Component_="System.Data.dll" FileName="SYSTEM~7.DLL|System.Data.dll" Attributes="0" SourcePath="files\System.Data.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.Deployment.dll" Component_="System.Deployment.dll" FileName="SYSTEM~8.DLL|System.Deployment.dll" Attributes="0" SourcePath="files\System.Deployment.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.dll" Component_="System.dll" FileName="System.dll" Attributes="0" SourcePath="files\System.dll" SelfReg="false" DigSign="true"/>
+    <ROW File="System.Drawing.dll" Component_="System.Drawing.dll" FileName="SYSTEM~9.DLL|System.Drawing.dll" Attributes="0" SourcePath="files\System.Drawing.dll" SelfReg="false" DigSign="true"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AiPersistentPropComponent">
     <ROW Property="AI_INSTALLPERUSER" Registry="AI_INSTALLPERUSER" HklmSearch="AI_INSTALLPERUSER" HkcuSearch="AI_INSTALLPERUSER_1"/>
@@ -140,6 +144,9 @@
     <ROW Name="SoftwareDetector.dll" SourcePath="&lt;AI_CUSTACTS&gt;SoftwareDetector.dll"/>
     <ROW Name="aicustact.dll" SourcePath="&lt;AI_CUSTACTS&gt;aicustact.dll"/>
     <ROW Name="lzmaextractor.dll" SourcePath="&lt;AI_CUSTACTS&gt;lzmaextractor.dll"/>
+    <ROW Name="winapt.ico" SourcePath="winapt.ico"/>
+    <ROW Name="winapt.png" SourcePath="winapt.png"/>
+    <ATTRIBUTE name="DeletedRows" value="applogoicon.ico@applogoicondark.ico"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlComponent">
     <ROW Dialog_="InstallTypeDlg" Control="ProducVersionText" Type="Text" X="16" Y="60" Width="362" Height="15" Attributes="196611" Text="Version: [ProductVersion]" TextStyle="[ManufacturerFont]" Order="900" TextLocId="AppInstaller.Control.Text.ProductVersion" MsiKey="InstallTypeDlg#ProducVersionText"/>
