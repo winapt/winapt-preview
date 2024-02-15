@@ -21,7 +21,7 @@ namespace winpkg
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Console.WriteLine("APT for Windows");
-            Console.WriteLine("Copyright (C) 2024 Useful Stuffs.");
+            Console.WriteLine("Copyright (C) 2024 WinAPT Organization.");
             Console.WriteLine("Licensed with AGPL license (https://www.gnu.org/licenses/agpl-3.0.en.html#license-text).");
             if (args.Length == 0) 
             {

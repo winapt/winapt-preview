@@ -9,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Linux APT for Windows")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Useful Stuffs")]
+[assembly: AssemblyCompany("WinAPT Organization")]
 [assembly: AssemblyProduct("Linux APT for Windows")]
-[assembly: AssemblyCopyright("Copyright © 2024 Useful Stuffs.")]
+[assembly: AssemblyCopyright("Copyright © 2024 WinAPT Organization.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
