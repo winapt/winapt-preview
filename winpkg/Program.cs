@@ -28,8 +28,10 @@ namespace winpkg
                 //Show help in console
                 Console.WriteLine("Available commands:");
                 Console.WriteLine("winapt install <package> - Installs a package from the online repository");
-                Console.WriteLine("winapt settings - Allows changing winapt settings");
+                Console.WriteLine("winapt localinstall <packagefile> - Installs a .winapt package from the local system");
+                //Console.WriteLine("winapt settings - Allows changing winapt settings");
                 Console.WriteLine("winapt license - Displays the license agreement");
+                Console.WriteLine("winapt about - Displays some program information");
             }
             else
             {
@@ -116,6 +118,68 @@ namespace winpkg
                     Console.WriteLine("Program version: " + Application.ProductVersion);
                     Console.WriteLine("Created by Useful Stuffs - https://github.com/usefulstuffs");
                     Console.WriteLine("GitHub Page: https://github.com/winapt");
+                }
+                else if (arg1 == "localinstall")
+                {
+                    string packagefile = args[1].Trim();
+                    if (File.Exists(packagefile) && packagefile.EndsWith(".winapt"))
+                    {
+                        Console.WriteLine("Installing packages from unknown sources is a security risk. We reccommend you to install packages from our official repository.");
+                        Console.WriteLine("Continue anyway? [y/N] ");
+                        var key = Console.ReadKey(true);
+                        while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && key.Key != ConsoleKey.Enter)
+                        {
+                            key = Console.ReadKey(true);
+                        }
+                        if (key.Key == ConsoleKey.Y)
+                        {
+                            try
+                            {
+                                Console.WriteLine("Found package " + packagefile + ". Extracting...");
+                                ZipFile.ExtractToDirectory(packagefile, Path.GetTempPath() + "/winapt");
+                                if (File.Exists(Path.GetTempPath() + "/winapt/Install.cmd"))
+                                {
+                                    Console.WriteLine("Package was extracted. Beginning installation...");
+                                    Process info = new Process();
+                                    info.StartInfo.FileName = "cmd.exe";
+                                    info.StartInfo.Arguments = "/c " + Path.GetTempPath() + "/winapt/Install.cmd";
+                                    info.StartInfo.CreateNoWindow = true;
+                                    info.StartInfo.RedirectStandardOutput = true;
+                                    info.StartInfo.UseShellExecute = false;
+                                    info.Start();
+                                    string output = info.StandardOutput.ReadToEnd();
+                                    Console.WriteLine(output);
+                                    if (info.ExitCode != 0)
+                                    {
+                                        Console.WriteLine("Error during the installation of package " + packagefile + "!");
+                                        Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Successfully installed package " + packagefile + "!");
+                                        Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Package " + packagefile + " does not contain a valid install script.");
+                                    Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error: {ex.Message}");
+                            }
+                        }
+                        else if (key.Key == ConsoleKey.N || key.Key == ConsoleKey.Enter)
+                        {
+                            Environment.Exit(0);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("The package " + packagefile + " was not found or is not a valid package.");
+                    }
                 }
                 else
                 {
