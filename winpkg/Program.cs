@@ -7,6 +7,7 @@ using System.Diagnostics;
 using winpkg.Properties;
 using System.IO;
 using System.IO.Compression;
+using Microsoft.Win32;
 
 namespace winpkg
 {
@@ -29,7 +30,6 @@ namespace winpkg
                 Console.WriteLine("Available commands:");
                 Console.WriteLine("winapt install <package> - Installs a package from the online repository");
                 Console.WriteLine("winapt localinstall <packagefile> - Installs a .winapt package from the local system");
-                //Console.WriteLine("winapt settings - Allows changing winapt settings");
                 Console.WriteLine("winapt license - Displays the license agreement");
                 Console.WriteLine("winapt about - Displays some program information");
             }
@@ -97,11 +97,6 @@ namespace winpkg
                         Console.WriteLine($"Error: {ex.Message}");
                     }
                 }
-                else if (arg1 == "settings")
-                {
-                    //Show settings
-                    Console.WriteLine("This feature is still in development! Thank you for your interest.");
-                }
                 else if (arg1 == "license")
                 {
                     try
@@ -124,56 +119,124 @@ namespace winpkg
                     string packagefile = args[1].Trim();
                     if (File.Exists(packagefile) && packagefile.EndsWith(".winapt"))
                     {
-                        Console.WriteLine("Installing packages from unknown sources is a security risk. We reccommend you to install packages from our official repository.");
-                        Console.WriteLine("Continue anyway? [y/N] ");
-                        var key = Console.ReadKey(true);
-                        while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && key.Key != ConsoleKey.Enter)
+                        RegistryKey rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock");
+                        int DevMode = Convert.ToInt32(rk.GetValue("AllowDevelopmentWithoutDevLicense",0));
+                        rk.Close();
+                        rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+                        string platform = rk.GetValue("ProductName") as string;
+                        if (DevMode == 1) 
                         {
-                            key = Console.ReadKey(true);
-                        }
-                        if (key.Key == ConsoleKey.Y)
-                        {
-                            try
+                            Console.WriteLine("Installing packages from unknown sources is a security risk. We reccommend you to install packages from our official repository.");
+                            Console.WriteLine("Continue anyway? [y/N] ");
+                            var key = Console.ReadKey(true);
+                            while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && key.Key != ConsoleKey.Enter)
                             {
-                                Console.WriteLine("Found package " + packagefile + ". Extracting...");
-                                ZipFile.ExtractToDirectory(packagefile, Path.GetTempPath() + "/winapt");
-                                if (File.Exists(Path.GetTempPath() + "/winapt/Install.cmd"))
+                                key = Console.ReadKey(true);
+                            }
+                            if (key.Key == ConsoleKey.Y)
+                            {
+                                try
                                 {
-                                    Console.WriteLine("Package was extracted. Beginning installation...");
-                                    Process info = new Process();
-                                    info.StartInfo.FileName = "cmd.exe";
-                                    info.StartInfo.Arguments = "/c " + Path.GetTempPath() + "/winapt/Install.cmd";
-                                    info.StartInfo.CreateNoWindow = true;
-                                    info.StartInfo.RedirectStandardOutput = true;
-                                    info.StartInfo.UseShellExecute = false;
-                                    info.Start();
-                                    string output = info.StandardOutput.ReadToEnd();
-                                    Console.WriteLine(output);
-                                    if (info.ExitCode != 0)
+                                    Console.WriteLine("Found package " + packagefile + ". Extracting...");
+                                    ZipFile.ExtractToDirectory(packagefile, Path.GetTempPath() + "/winapt");
+                                    if (File.Exists(Path.GetTempPath() + "/winapt/Install.cmd"))
                                     {
-                                        Console.WriteLine("Error during the installation of package " + packagefile + "!");
-                                        Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                        Console.WriteLine("Package was extracted. Beginning installation...");
+                                        Process info = new Process();
+                                        info.StartInfo.FileName = "cmd.exe";
+                                        info.StartInfo.Arguments = "/c " + Path.GetTempPath() + "/winapt/Install.cmd";
+                                        info.StartInfo.CreateNoWindow = true;
+                                        info.StartInfo.RedirectStandardOutput = true;
+                                        info.StartInfo.UseShellExecute = false;
+                                        info.Start();
+                                        string output = info.StandardOutput.ReadToEnd();
+                                        Console.WriteLine(output);
+                                        if (info.ExitCode != 0)
+                                        {
+                                            Console.WriteLine("Error during the installation of package " + packagefile + "!");
+                                            Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Successfully installed package " + packagefile + "!");
+                                            Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                        }
                                     }
                                     else
                                     {
-                                        Console.WriteLine("Successfully installed package " + packagefile + "!");
+                                        Console.WriteLine("Package " + packagefile + " does not contain a valid install script.");
                                         Directory.Delete(Path.GetTempPath() + "/winapt", true);
                                     }
                                 }
-                                else
+                                catch (Exception ex)
                                 {
-                                    Console.WriteLine("Package " + packagefile + " does not contain a valid install script.");
-                                    Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                    Console.WriteLine($"Error: {ex.Message}");
                                 }
                             }
-                            catch (Exception ex)
+                            else if (key.Key == ConsoleKey.N || key.Key == ConsoleKey.Enter)
                             {
-                                Console.WriteLine($"Error: {ex.Message}");
+                                Environment.Exit(0);
                             }
                         }
-                        else if (key.Key == ConsoleKey.N || key.Key == ConsoleKey.Enter)
+                        else if (!platform.Contains("Windows 10"))
                         {
-                            Environment.Exit(0);
+                            Console.WriteLine("Installing packages from unknown sources is a security risk. We reccommend you to install packages from our official repository.");
+                            Console.WriteLine("Continue anyway? [y/N] ");
+                            var key = Console.ReadKey(true);
+                            while (key.Key != ConsoleKey.Y && key.Key != ConsoleKey.N && key.Key != ConsoleKey.Enter)
+                            {
+                                key = Console.ReadKey(true);
+                            }
+                            if (key.Key == ConsoleKey.Y)
+                            {
+                                try
+                                {
+                                    Console.WriteLine("Found package " + packagefile + ". Extracting...");
+                                    ZipFile.ExtractToDirectory(packagefile, Path.GetTempPath() + "/winapt");
+                                    if (File.Exists(Path.GetTempPath() + "/winapt/Install.cmd"))
+                                    {
+                                        Console.WriteLine("Package was extracted. Beginning installation...");
+                                        Process info = new Process();
+                                        info.StartInfo.FileName = "cmd.exe";
+                                        info.StartInfo.Arguments = "/c " + Path.GetTempPath() + "/winapt/Install.cmd";
+                                        info.StartInfo.CreateNoWindow = true;
+                                        info.StartInfo.RedirectStandardOutput = true;
+                                        info.StartInfo.UseShellExecute = false;
+                                        info.Start();
+                                        string output = info.StandardOutput.ReadToEnd();
+                                        Console.WriteLine(output);
+                                        if (info.ExitCode != 0)
+                                        {
+                                            Console.WriteLine("Error during the installation of package " + packagefile + "!");
+                                            Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Successfully installed package " + packagefile + "!");
+                                            Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Package " + packagefile + " does not contain a valid install script.");
+                                        Directory.Delete(Path.GetTempPath() + "/winapt", true);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine($"Error: {ex.Message}");
+                                }
+                            }
+                            else if (key.Key == ConsoleKey.N || key.Key == ConsoleKey.Enter)
+                            {
+                                Environment.Exit(0);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("To protect your computer's security, On Windows 10 and higher you need to enable developer mode to install local packages.");
+                            Console.WriteLine("You can enable developer mode from settings.");
+                            Console.WriteLine("More info at https://learn.microsoft.com/windows/apps/get-started/enable-your-device-for-development");
                         }
                     }
                     else
