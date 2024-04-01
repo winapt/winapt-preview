@@ -8,6 +8,7 @@ using winpkg.Properties;
 using System.IO;
 using System.IO.Compression;
 using Microsoft.Win32;
+using System.Runtime.InteropServices;
 
 namespace winpkg
 {
@@ -32,6 +33,7 @@ namespace winpkg
                 Console.WriteLine("winapt localinstall <packagefile> - Installs a .winapt package from the local system");
                 Console.WriteLine("winapt license - Displays the license agreement");
                 Console.WriteLine("winapt about - Displays some program information");
+                Console.WriteLine("winapt list - Displays a list of all available packages");
             }
             else
             {
@@ -43,6 +45,10 @@ namespace winpkg
                     if (Environment.Is64BitOperatingSystem) 
                     {
                         arch = "x64/";
+                    }
+                    else if (ArchitectureInfo.IsArm64())
+                    {
+                        arch = "arm64/";
                     }
                     else
                     {
@@ -244,11 +250,58 @@ namespace winpkg
                         Console.WriteLine("The package " + packagefile + " was not found or is not a valid package.");
                     }
                 }
+                else if (arg1 == "list")
+                {
+                    try
+                    {
+                        string arch;
+                        if (Environment.Is64BitOperatingSystem)
+                        {
+                            arch = "x64/";
+                        }
+                        else if (ArchitectureInfo.IsArm64())
+                        {
+                            arch = "arm64/";
+                        }
+                        else
+                        {
+                            arch = "x86/";
+                        }
+                        string url = Resources.RepositoryAPI + arch + "list.txt";
+                        using (WebClient client = new WebClient())
+                        {
+                            string responseFromServer = client.DownloadString(url);
+                            Console.WriteLine("Available packages for your system:");
+                            Console.WriteLine(responseFromServer);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: " + ex.Message);
+                    }
+                }
                 else
                 {
                     Console.WriteLine("Unrecognized command: " + arg1);
                 }
             }
         }
+    }
+    public static class ArchitectureInfo
+    {
+        public static bool IsArm64()
+        {
+            var handle = Process.GetCurrentProcess().Handle;
+            IsWow64Process2(handle, out var processMachine, out var nativeMachine);
+
+            return nativeMachine == 0xaa64;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool IsWow64Process2(
+            IntPtr process,
+            out ushort processMachine,
+            out ushort nativeMachine
+        );
     }
 }

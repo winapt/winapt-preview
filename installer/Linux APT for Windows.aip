@@ -95,7 +95,7 @@
     <ROW Action="AI_AppSearchEx" Condition="AI_BOOTSTRAPPER" Sequence="251"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
-    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="..\..\..\InstallerOutput\winapt" PackageFileName="Setup" Languages="en" InstallationType="4" PackageType="1" ExeIconPath="winapt.ico" MainAppUrl="http://fritzbox3272.controlliamo.com/cdn/winapt/releases/Beta3/Setup.msi" ExtUI="true" Options="9" UseLargeSchema="true" ExeName="WinAPT Installer"/>
+    <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="..\..\..\InstallerOutput\winapt" PackageFileName="Setup" Languages="en" InstallationType="4" PackageType="1" ExeIconPath="winapt.ico" MainAppUrl="http://vichingo455.ddns.net/cdn/winapt/releases/Beta4/Setup.msi" ExtUI="true" Options="9" UseLargeSchema="true" ExeName="WinAPT Installer"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.DictionaryComponent">
     <ROW Path="&lt;AI_DICTS&gt;ui.ail"/>
@@ -129,6 +129,7 @@
     <ATTRIBUTE name="DeletedRows" value="applogoicon.ico@applogoicondark.ico"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlComponent">
+    <ROW Dialog_="ExitDialog" Control="LaunchBtn" Type="ImageButton" X="280" Y="210" Width="95" Height="28" Attributes="2" Text="[ButtonImage]" TextStyle="[ImageBtnFont]" Order="800" MsiKey="ExitDialog#LaunchBtn" ExtType="ImageButton" ExtData="Launch" ExtDataLocId="AppInstaller.Control.Text.LaunchBtn"/>
     <ROW Dialog_="FolderDlg" Control="FolderDlgDialogInitializer" Type="DialogInitializer" X="0" Y="0" Width="0" Height="0" Attributes="0" Order="-1" TextLocId="-" HelpLocId="-" ExtDataLocId="-"/>
     <ROW Dialog_="MaintenanceWelcomeDlg" Control="MaintenanceWelcomeDlgDialogInitializer" Type="DialogInitializer" X="0" Y="0" Width="0" Height="0" Attributes="0" Order="-1" TextLocId="-" HelpLocId="-" ExtDataLocId="-"/>
     <ROW Dialog_="MaintenanceWelcomeDlg" Control="LaunchButton" Type="ImageButton" X="379" Y="210" Width="95" Height="28" Attributes="3" Text="[ButtonImage]" TextStyle="[ImageBtnFont]" Order="500" MsiKey="MaintenanceWelcomeDlg#LaunchButton" Options="1" ExtType="ImageButton" ExtData="Exit"/>
@@ -143,8 +144,10 @@
     <ROW Dialog_="PreparePrereqDlg" Control="ProducVersionText" Type="Text" X="16" Y="60" Width="362" Height="15" Attributes="196611" Text="Version: [ProductVersion]" TextStyle="[ManufacturerFont]" Order="800" TextLocId="AppInstaller.Control.Text.ProductVersion" MsiKey="PreparePrereqDlg#ProducVersionText"/>
     <ROW Dialog_="PreparePrereqDlg" Control="AboutBtn" Type="ImageButton" X="5" Y="269" Width="18" Height="18" Attributes="4718595" Text="[AboutBtnIcon]" TextStyle="[ManufacturerFont]" Order="900" MsiKey="PreparePrereqDlg#AboutBtn" Options="1" ExtType="ImageButton" ExtData="[InfoIconMsi]"/>
     <ROW Dialog_="PrerequisitesDlg" Control="Cancel" Type="ImageButton" X="0" Y="0" Width="0" Height="0" Attributes="2" Text="[ButtonImage]" TextStyle="[ImageBtnFont]" Order="100" MsiKey="PrerequisitesDlg#Cancel" Options="1" ExtType="ImageButton" ExtData="[ButtonText_Cancel]" ExtDataLocId="-"/>
+    <ROW Dialog_="ProgressDlg" Control="LaunchCheckBox" Type="ImageCheckBox" X="16" Y="218" Width="220" Height="15" Attributes="2" Property="AiSkipExitDlg" Text="[CheckboxImage]" TextStyle="[ManufacturerFont]" Order="1200" MsiKey="ProgressDlg#LaunchCheckBox" ExtType="ImageCheckBox" ExtData="Launch when ready" ExtDataLocId="AppInstaller.Control.Text.LaunchWhenReadyCheckbox"/>
     <ROW Dialog_="WelcomeDlg" Control="WelcomeDlgDialogInitializer" Type="DialogInitializer" X="0" Y="0" Width="0" Height="0" Attributes="0" Order="-1" TextLocId="-" HelpLocId="-" ExtDataLocId="-"/>
     <ROW Dialog_="WelcomeDlg" Control="CustomInstallBtn" Type="ImageButton" X="459" Y="210" Width="15" Height="28" Attributes="3" Text="[CustomInstallBtn]" TextStyle="[ImageBtnFont]" Order="400" MsiKey="WelcomeDlg#CustomInstallBtn" Options="1" ExtType="ImageButton"/>
+    <ROW Dialog_="WelcomeDlg" Control="LaunchCheckBox" Type="ImageCheckBox" X="16" Y="218" Width="220" Height="15" Attributes="2" Property="AiSkipExitDlg" Text="[CheckboxImage]" TextStyle="[ManufacturerFont]" Order="1000" MsiKey="WelcomeDlg#LaunchCheckBox" ExtType="ImageCheckBox" ExtData="Launch when ready" ExtDataLocId="AppInstaller.Control.Text.LaunchWhenReadyCheckbox"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiControlEventComponent">
     <ROW Dialog_="WelcomeDlg" Control_="Next" Event="EndDialog" Argument="Return" Condition="AI_INSTALL" Ordering="1"/>
@@ -278,7 +281,6 @@
     <ROW Condition="(VersionNT &lt;&gt; 500)" Description="[ProductName] cannot be installed on [WindowsTypeNT50Display]." DescriptionLocId="AI.LaunchCondition.NoNT50" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="(VersionNT &lt;&gt; 600)" Description="[ProductName] cannot be installed on [WindowsTypeNT60Display]." DescriptionLocId="AI.LaunchCondition.NoNT60" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="AI_DETECTED_INTERNET_CONNECTION" Description="[ProductName] requires an active Internet connection for installation. Please check your network configuration and proxy settings." DescriptionLocId="AI.LaunchCondition.Internet" IsPredefined="true" Builds="DefaultBuild"/>
-    <ROW Condition="NOT AiArm64" Description="[ProductName] cannot be installed on systems running on ARM64 processors. Check for a ARM64 version of [ProductName]" DescriptionLocId="AI.LaunchCondition.ARM64" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="SETUPEXEDIR OR (REMOVE=&quot;ALL&quot;)" Description="This package can only be run from a bootstrapper." DescriptionLocId="AI.LaunchCondition.RequireBootstrapper" IsPredefined="true" Builds="DefaultBuild"/>
     <ROW Condition="VersionNT" Description="[ProductName] cannot be installed on [WindowsType9XDisplay]." DescriptionLocId="AI.LaunchCondition.No9X" IsPredefined="true" Builds="DefaultBuild"/>
   </COMPONENT>
